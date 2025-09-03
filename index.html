@@ -707,6 +707,9 @@
         }
     }
 
+// Объект для хранения активных таймеров (добавьте в самое начало скрипта)
+const activeTimers = {};
+
 // Универсальная функция для управления таймерами
 function startTimer(event, timerId, duration, displayText) {
     event.stopPropagation(); // Останавливаем всплытие
@@ -721,7 +724,7 @@ function startTimer(event, timerId, duration, displayText) {
         delete activeTimers[timerId];
         timerBtn.textContent = displayText;
         timerDisplay.textContent = duration;
-        return false; // Возвращаем false для дополнительной защиты
+        return false;
     }
     
     // Запускаем новый таймер
@@ -747,7 +750,7 @@ function startTimer(event, timerId, duration, displayText) {
         }
     }, 1000);
     
-    return false; // Предотвращаем дальнейшее всплытие
+    return false;
 }
 
 // Конкретные функции для каждого таймера
