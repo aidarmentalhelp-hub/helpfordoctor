@@ -307,7 +307,7 @@
                 <li>Медленный выдох через рот на 8 счетов</li>
             </ol>
             <div class="timer-display" id="breath-timer">05:00</div>
-            <button class="timer-btn" onclick="startBreathTimer(event)">Запустить таймер </button>
+            <button class="timer-btn" onclick="startBreathTimer(event) data-running="false">Запустить таймер </button>
         </div>
     </div>
 <div class="technique" onclick="toggleTechnique(this)">
@@ -710,31 +710,28 @@
     // Глобальная переменная для хранения интервала таймера
 let breathTimerInterval = null;
 
+// Таймер дыхания с остановкой всплытия события
 function startBreathTimer(event) {
     event.stopPropagation(); // Останавливаем всплытие события
-    
     const timerDisplay = document.getElementById('breath-timer');
-    const timerButton = document.getElementById('breath-timer-button');
+    const timerBtn = event.target;
+    let seconds = 4 * 60; // 4 минуты на 4 цикла
+    let interval;
     
     // Если таймер уже запущен, останавливаем его
-    if (breathTimerInterval) {
-        clearInterval(breathTimerInterval);
-        breathTimerInterval = null;
+    if (timerBtn.dataset.running === "true") {
+        clearInterval(interval);
+        timerBtn.textContent = "Запустить таймер (4 цикла)";
+        timerBtn.dataset.running = "false";
         timerDisplay.textContent = "04:00";
-        timerButton.textContent = "Запустить таймер";
-        timerButton.onclick = startBreathTimer;
         return;
     }
     
-    let seconds = 4 * 60; // 4 минуты на 4 цикла
+    // Запускаем таймер
+    timerBtn.textContent = "Остановить таймер";
+    timerBtn.dataset.running = "true";
     
-    // Меняем кнопку на "Стоп"
-    timerButton.textContent = "Стоп";
-    timerButton.onclick = function(event) {
-        startBreathTimer(event); // Рекурсивный вызов для остановки
-    };
-    
-    breathTimerInterval = setInterval(() => {
+    interval = setInterval(() => {
         seconds--;
         const mins = Math.floor(seconds / 60);
         const secs = seconds % 60;
@@ -742,15 +739,13 @@ function startBreathTimer(event) {
         timerDisplay.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
         
         if (seconds <= 0) {
-            clearInterval(breathTimerInterval);
-            breathTimerInterval = null;
+            clearInterval(interval);
             timerDisplay.textContent = "Готово!";
+            timerBtn.textContent = "Запустить таймер (4 цикла)";
+            timerBtn.dataset.running = "false";
             
-            // Возвращаем кнопку в исходное состояние через 2 секунды
             setTimeout(() => {
                 timerDisplay.textContent = "04:00";
-                timerButton.textContent = "Запустить таймер";
-                timerButton.onclick = startBreathTimer;
             }, 2000);
         }
     }, 1000);
