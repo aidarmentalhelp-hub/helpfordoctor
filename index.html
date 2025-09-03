@@ -307,7 +307,7 @@
                 <li>Медленный выдох через рот на 8 счетов</li>
             </ol>
             <div class="timer-display" id="breath-timer">05:00</div>
-            <button class="timer-btn" onclick="startBreathTimer(event)"> Запустить таймер </button>
+            <button class="timer-btn" onclick="return startBreathTimer(event)"> Запустить таймер (4 цикла)</button>
         </div>
     </div>
 <div class="technique" onclick="toggleTechnique(this)">
@@ -322,7 +322,7 @@
             <li>Переключитесь на конкретное действие</li>
         </ol>
         <div class="timer-display" id="worry-timer">05:00</div>
-        <button class="timer-btn" onclick="startWorryTimer(event)">Запустить таймер (5 минут)</button>
+        <button class="timer-btn" onclick="return startWorryTimer(event)">Запустить таймер (5 минут)</button>
         <p>Этот метод помогает контролировать тревогу, а не позволять ей контролировать вас.</p>
     </div>
 </div>
@@ -707,13 +707,11 @@
         }
     }
 
-    
-// Объект для хранения активных таймеров
-const activeTimers = {};
-
 // Универсальная функция для управления таймерами
 function startTimer(event, timerId, duration, displayText) {
-    event.stopPropagation();
+    event.stopPropagation(); // Останавливаем всплытие
+    event.preventDefault(); // Предотвращаем действие по умолчанию
+    
     const timerDisplay = document.getElementById(timerId);
     const timerBtn = event.target;
     
@@ -723,7 +721,7 @@ function startTimer(event, timerId, duration, displayText) {
         delete activeTimers[timerId];
         timerBtn.textContent = displayText;
         timerDisplay.textContent = duration;
-        return;
+        return false; // Возвращаем false для дополнительной защиты
     }
     
     // Запускаем новый таймер
@@ -748,17 +746,18 @@ function startTimer(event, timerId, duration, displayText) {
             }, 2000);
         }
     }, 1000);
+    
+    return false; // Предотвращаем дальнейшее всплытие
 }
 
 // Конкретные функции для каждого таймера
 function startBreathTimer(event) {
-    startTimer(event, 'breath-timer', '04:00', 'Запустить таймер (4 цикла)');
+    return startTimer(event, 'breath-timer', '04:00', 'Запустить таймер (4 цикла)');
 }
 
 function startWorryTimer(event) {
-    startTimer(event, 'worry-timer', '05:00', 'Запустить таймер (5 минут)');
+    return startTimer(event, 'worry-timer', '05:00', 'Запустить таймер (5 минут)');
 }
-    
     // Показываем первую секцию при загрузке
     document.addEventListener('DOMContentLoaded', function() {
         // Показываем первую секцию при загрузке
