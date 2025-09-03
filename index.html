@@ -307,7 +307,7 @@
                 <li>Медленный выдох через рот на 8 счетов</li>
             </ol>
             <div class="timer-display" id="breath-timer">05:00</div>
-            <button class="timer-btn" onclick="startBreathTimer(event) data-running="false">Запустить таймер </button>
+            <button class="timer-btn" onclick="startBreathTimer(event)"> Запустить таймер </button>
         </div>
     </div>
 <div class="technique" onclick="toggleTechnique(this)">
@@ -707,31 +707,30 @@
         }
     }
 
-    // Глобальная переменная для хранения интервала таймера
-let breathTimerInterval = null;
+    
+// Объект для хранения активных таймеров
+const activeTimers = {};
 
-// Таймер дыхания с остановкой всплытия события
-function startBreathTimer(event) {
-    event.stopPropagation(); // Останавливаем всплытие события
-    const timerDisplay = document.getElementById('breath-timer');
+// Универсальная функция для управления таймерами
+function startTimer(event, timerId, duration, displayText) {
+    event.stopPropagation();
+    const timerDisplay = document.getElementById(timerId);
     const timerBtn = event.target;
-    let seconds = 4 * 60; // 4 минуты на 4 цикла
-    let interval;
     
     // Если таймер уже запущен, останавливаем его
-    if (timerBtn.dataset.running === "true") {
-        clearInterval(interval);
-        timerBtn.textContent = "Запустить таймер (4 цикла)";
-        timerBtn.dataset.running = "false";
-        timerDisplay.textContent = "04:00";
+    if (activeTimers[timerId]) {
+        clearInterval(activeTimers[timerId]);
+        delete activeTimers[timerId];
+        timerBtn.textContent = displayText;
+        timerDisplay.textContent = duration;
         return;
     }
     
-    // Запускаем таймер
+    // Запускаем новый таймер
+    let seconds = parseInt(duration.split(':')[0]) * 60 + parseInt(duration.split(':')[1]);
     timerBtn.textContent = "Остановить таймер";
-    timerBtn.dataset.running = "true";
     
-    interval = setInterval(() => {
+    activeTimers[timerId] = setInterval(() => {
         seconds--;
         const mins = Math.floor(seconds / 60);
         const secs = seconds % 60;
@@ -739,17 +738,27 @@ function startBreathTimer(event) {
         timerDisplay.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
         
         if (seconds <= 0) {
-            clearInterval(interval);
+            clearInterval(activeTimers[timerId]);
+            delete activeTimers[timerId];
             timerDisplay.textContent = "Готово!";
-            timerBtn.textContent = "Запустить таймер (4 цикла)";
-            timerBtn.dataset.running = "false";
+            timerBtn.textContent = displayText;
             
             setTimeout(() => {
-                timerDisplay.textContent = "04:00";
+                timerDisplay.textContent = duration;
             }, 2000);
         }
     }, 1000);
 }
+
+// Конкретные функции для каждого таймера
+function startBreathTimer(event) {
+    startTimer(event, 'breath-timer', '04:00', 'Запустить таймер (4 цикла)');
+}
+
+function startWorryTimer(event) {
+    startTimer(event, 'worry-timer', '05:00', 'Запустить таймер (5 минут)');
+}
+    
     // Показываем первую секцию при загрузке
     document.addEventListener('DOMContentLoaded', function() {
         // Показываем первую секцию при загрузке
