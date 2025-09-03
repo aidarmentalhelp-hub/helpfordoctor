@@ -310,23 +310,22 @@
             <button class="timer-btn" onclick="startBreathTimer(event)">Запустить таймер </button>
         </div>
     </div>
-
-   <div class="technique" onclick="toggleTechnique(this)">
-        <h3>Метод "Позвольте себе потревожиться" <span>⬇️</span></h3>
-        <div class="technique-content">
-            <p>Целенаправленное выделение времени для тревоги:</p>
-            <ol>
-                <li>Поставьте таймер на 5 минут</li>
-                <li>Позвольте себе полностью погрузиться в тревожные мысли</li>
-                <li>Не сопротивляйтесь, а полностью "потревожьтесь"</li>
-                <li>Когда таймер сработает, скажите: "Время тревоги закончено"</li>
-                <li>Переключитесь на конкретное действие</li>
-            </ol>
-            <p>Этот метод помогает контролировать тревогу, а не позволять ей контролировать вас.</p>
-            <div class="timer-display" id="breath-timer">05:00</div>
-            <button class="timer-btn" onclick="startBreathTimer(event)">Запустить таймер </button>
-        </div>
+<div class="technique" onclick="toggleTechnique(this)">
+    <h3>Метод "Позвольте себе потревожиться" <span>⬇️</span></h3>
+    <div class="technique-content">
+        <p>Целенаправленное выделение времени для тревоги:</p>
+        <ol>
+            <li>Поставьте таймер на 5 минут</li>
+            <li>Позвольте себе полностью погрузиться в тревожные мысли</li>
+            <li>Не сопротивляйтесь, а полностью "потревожьтесь"</li>
+            <li>Когда таймер сработает, скажите: "Время тревоги закончено"</li>
+            <li>Переключитесь на конкретное действие</li>
+        </ol>
+        <div class="timer-display" id="worry-timer">05:00</div>
+        <button class="timer-btn" onclick="startWorryTimer(event)">Запустить таймер (5 минут)</button>
+        <p>Этот метод помогает контролировать тревогу, а не позволять ей контролировать вас.</p>
     </div>
+</div>
     
     <div class="technique" onclick="toggleTechnique(this)">
         <h3>Заземление 5-4-3-2-1 <span>⬇️</span></h3>
@@ -708,28 +707,54 @@
         }
     }
 
-    // Таймер дыхания с остановкой всплытия события
-    function startBreathTimer(event) {
-        event.stopPropagation(); // Останавливаем всплытие события
-        const timerDisplay = document.getElementById('breath-timer');
-        let seconds = 4 * 60; // 4 минуты на 4 цикла
-        
-        const interval = setInterval(() => {
-            seconds--;
-            const mins = Math.floor(seconds / 60);
-            const secs = seconds % 60;
-            
-            timerDisplay.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-            
-            if (seconds <= 0) {
-                clearInterval(interval);
-                timerDisplay.textContent = "Готово!";
-                setTimeout(() => {
-                    timerDisplay.textContent = "04:00";
-                }, 2000);
-            }
-        }, 1000);
+    // Глобальная переменная для хранения интервала таймера
+let breathTimerInterval = null;
+
+function startBreathTimer(event) {
+    event.stopPropagation(); // Останавливаем всплытие события
+    
+    const timerDisplay = document.getElementById('breath-timer');
+    const timerButton = document.getElementById('breath-timer-button');
+    
+    // Если таймер уже запущен, останавливаем его
+    if (breathTimerInterval) {
+        clearInterval(breathTimerInterval);
+        breathTimerInterval = null;
+        timerDisplay.textContent = "04:00";
+        timerButton.textContent = "Запустить таймер";
+        timerButton.onclick = startBreathTimer;
+        return;
     }
+    
+    let seconds = 4 * 60; // 4 минуты на 4 цикла
+    
+    // Меняем кнопку на "Стоп"
+    timerButton.textContent = "Стоп";
+    timerButton.onclick = function(event) {
+        startBreathTimer(event); // Рекурсивный вызов для остановки
+    };
+    
+    breathTimerInterval = setInterval(() => {
+        seconds--;
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        
+        timerDisplay.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        
+        if (seconds <= 0) {
+            clearInterval(breathTimerInterval);
+            breathTimerInterval = null;
+            timerDisplay.textContent = "Готово!";
+            
+            // Возвращаем кнопку в исходное состояние через 2 секунды
+            setTimeout(() => {
+                timerDisplay.textContent = "04:00";
+                timerButton.textContent = "Запустить таймер";
+                timerButton.onclick = startBreathTimer;
+            }, 2000);
+        }
+    }, 1000);
+}
     // Показываем первую секцию при загрузке
     document.addEventListener('DOMContentLoaded', function() {
         // Показываем первую секцию при загрузке
@@ -884,7 +909,7 @@
     function startBreathTimer(event) {
         event.stopPropagation(); // Останавливаем всплытие события
         const timerDisplay = document.getElementById('breath-timer');
-        let seconds = 4 * 60; // 4 минуты на 4 цикла
+        let seconds = 5 * 60; // 4 минуты на 4 цикла
         
         const interval = setInterval(() => {
             seconds--;
