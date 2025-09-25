@@ -1,0 +1,172 @@
+/* Стили для страницы "Первая помощь" */
+.quick-help-section {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow);
+}
+
+.quick-help-section h2 {
+    text-align: center;
+    color: var(--primary);
+    margin-bottom: 1.5rem;
+}
+
+.technique {
+    background: white;
+    border: 2px solid var(--light);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    transition: all 0.3s;
+}
+
+.technique:hover {
+    border-color: var(--secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.technique h3 {
+    color: var(--primary);
+    margin-top: 0;
+    text-align: center;
+    font-size: 1.4rem;
+}
+
+.technique-content {
+    margin-top: 1rem;
+}
+
+.timer-display {
+    font-size: 3rem;
+    font-weight: bold;
+    text-align: center;
+    color: var(--primary);
+    margin: 1rem 0;
+    font-family: 'Courier New', monospace;
+}
+
+.timer-btn {
+    background: var(--secondary);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    margin: 0 5px;
+    transition: all 0.3s;
+}
+
+.timer-btn:hover {
+    background: var(--primary);
+    transform: translateY(-2px);
+}
+
+.timer-btn.stop {
+    background: var(--accent);
+}
+
+.timer-btn.stop:hover {
+    background: #c0392b;
+}
+
+.timer-controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 1rem 0;
+}
+
+.help-container {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 10px;
+    border: 2px dashed var(--secondary);
+}
+
+.help-btn {
+    background: var(--success);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-right: 10px;
+    transition: all 0.3s;
+}
+
+.help-btn:hover {
+    background: #27ae60;
+    transform: translateY(-2px);
+}
+
+.help-btn.stop {
+    background: var(--accent);
+}
+
+.help-btn.stop:hover {
+    background: #c0392b;
+}
+
+.help-btn.more {
+    background: var(--warning);
+}
+
+.help-btn.more:hover {
+    background: #e67e22;
+}
+
+.task-display {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    color: var(--primary);
+    margin: 1rem 0;
+    padding: 1rem;
+    background: white;
+    border-radius: 10px;
+    border: 2px solid var(--secondary);
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.help-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 1rem;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .timer-display {
+        font-size: 2.5rem;
+    }
+    
+    .timer-controls {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .timer-btn {
+        width: 200px;
+        margin: 5px 0;
+    }
+    
+    .help-controls {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .help-btn {
+        width: 200px;
+        margin: 5px 0;
+    }
+}

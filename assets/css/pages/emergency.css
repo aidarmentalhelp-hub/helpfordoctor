@@ -1,0 +1,184 @@
+/* Стили для страницы "На каждый день" */
+        /* СТИЛИ ДЛЯ СТРАНИЦЫ ЭКСТРЕННОЙ ПОМОЩИ */
+        .emergency-header {
+            text-align: center;
+            color: var(--accent);
+            margin-bottom: 2rem;
+        }
+        
+        .warning-signs {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 2rem 0;
+        }
+        
+        .warning-item {
+            background: #fff4f4;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid var(--accent);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .warning-item h4 {
+            color: var(--accent);
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .warning-icon {
+            font-size: 1.5rem;
+        }
+        
+        .algorithm-steps {
+            counter-reset: step-counter;
+            margin: 2rem 0;
+        }
+        
+        .algorithm-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            padding: 1.5rem;
+            background: #f0f8ff;
+            border-radius: 10px;
+            margin: 1rem 0;
+            border-left: 4px solid var(--secondary);
+        }
+        
+        .algorithm-step:before {
+            counter-increment: step-counter;
+            content: counter(step-counter);
+            background: var(--secondary);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        .phone-numbers {
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+        }
+        
+        .phone-number {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 0.5rem 0;
+            display: block;
+        }
+        
+        .phone-description {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+        
+        .important-note {
+            background: linear-gradient(135deg, #fff9c4, #fff59d);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            border: 2px solid #ffd600;
+            text-align: center;
+        }
+        
+        .important-note h3 {
+            color: #d32f2f;
+            margin-top: 0;
+        }
+        
+        .professionalism-note {
+            background: #e8f5e9;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            text-align: center;
+            border-left: 4px solid var(--success);
+        }
+        /* СТИЛИ ДЛЯ СТРАНИЦЫ "В РАЗРАБОТКЕ" */
+        .construction-container {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: white;
+            border-radius: 15px;
+            margin: 2rem 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .construction-icon {
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
+            animation: bounce 2s infinite;
+        }
+        
+        .construction-title {
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .construction-text {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: var(--light);
+            border-radius: 4px;
+            margin: 2rem auto;
+            max-width: 400px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary), var(--success));
+            width: 65%;
+            animation: progress 2s ease-in-out infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-20px);}
+            60% {transform: translateY(-10px);}
+        }
+        
+        @keyframes progress {
+            0% {width: 65%;}
+            50% {width: 70%;}
+            100% {width: 65%;}
+        }
+        
+        .back-btn {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 2rem;
+            transition: all 0.3s;
+        }
+        
+        .back-btn:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+        }

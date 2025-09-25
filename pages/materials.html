@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Материалы | Анти-выгорание для врачей</title>
+    
+    <!-- Подключаем общие CSS -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/header.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    
+    <style>
+        /* Стили для страницы материалов */
+        .materials-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .material-category {
+            margin: 40px 0;
+        }
+        
+        .category-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .category-header h3 {
+            color: #2c3e50;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+        
+        .materials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 0 auto;
+            max-width: 1000px;
+        }
+        
+        .material-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: block;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .material-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .card-image {
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .mindfulness-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .eating-bg {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .sleep-bg {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        .boundaries-bg {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+        
+        .card-icon {
+            font-size: 3rem;
+            color: white;
+        }
+        
+        .card-content {
+            padding: 20px;
+        }
+        
+        .card-content h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .card-content p {
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+        
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #888;
+        }
+        
+        .duration {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .materials-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .materials-section {
+                padding: 10px;
+            }
+            
+            .card-image {
+                height: 100px;
+            }
+            
+            .card-icon {
+                font-size: 2.5rem;
+            }
+        }
+        
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .materials-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (min-width: 1025px) {
+            .materials-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Общая шапка -->
+<header>
+    <!-- Верхнее выпадающее меню -->
+    <div class="header-menu">
+        <button class="header-menu-button">☰ Меню</button>
+        <div class="header-dropdown">
+            <a href="../index.html"><span>⭐</span> Главная</a>
+            <a href="quick-help.html"><span>🚀</span> Первая помощь</a>
+            <a href="daily.html"><span>📅</span> На каждый день</a>
+            <a href="materials.html"><span>📚</span> Материалы</a>
+            <a href="organizational.html"><span>🏥</span> Для организации</a>
+            <a href="emergency.html"><span>🆘</span> Экстренная помощь</a>
+            <a href="tests.html"><span>📝</span> Тесты</a>
+        </div>
+    </div>
+
+    <div class="main-title">
+        <span class="stethoscope">🩺</span>
+        <h1 class="serious-title">
+            <a href="../index.html">Материалы</a>
+        </h1>
+        <span class="stethoscope">🩺</span>
+    </div>
+    <p class="subtitle">Обучающие материалы и практические руководства</p>
+    
+    <!-- Кнопка теста в шапке -->
+    <div>
+        <a href="https://aidarmentalhelp-hub.github.io/mbitest/" target="_blank" class="header-test-btn">
+            🔍 Пройти тест на выгорание
+        </a>
+    </div>
+</header>
+
+<!-- Уникальный контент страницы -->
+<main>
+    <div class="materials-section">
+        <h2>📚 Обучающие материалы</h2>
+        <p class="text-center">Мини-лекции и практические руководства для глубокого погружения в тему</p>
+    </div>
+
+    <!-- Полезное -->
+    <div class="material-category">
+        <div class="category-header">
+            <h3>Полезное</h3>
+        </div>
+
+        <div class="materials-grid">
+            <!-- Карточка 1 - Осознанность -->
+            <a href="mindfulness.html" class="material-card">
+                <div class="card-image mindfulness-bg">
+                    <div class="card-icon">🧘‍♂️</div>
+                </div>
+                <div class="card-content">
+                    <h4>Осознанность</h4>
+                    <p>Практики присутствия в здесь и сейчас для снижения стресса и повышения концентрации</p>
+                    <div class="card-meta">
+                        <span class="duration">⏱️ 10 мин</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Карточка 2 - Ошибки мышления -->
+            <a href="mistakes.html" class="material-card">
+                <div class="card-image eating-bg">
+                    <div class="card-icon">🤔</div>
+                </div>
+                <div class="card-content">
+                    <h4>Ошибки мышления</h4>
+                    <p>Когнитивные искажения, которые мешают нам жить и работать эффективно</p>
+                    <div class="card-meta">
+                        <span class="duration">⏱️ 15 мин</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Карточка 3 - Сон -->
+            <a href="sleep.html" class="material-card">
+                <div class="card-image sleep-bg">
+                    <div class="card-icon">😴</div>
+                </div>
+                <div class="card-content">
+                    <h4>Гигиена сна</h4>
+                    <p>Практические рекомендации для качественного сна и борьбы с бессонницей</p>
+                    <div class="card-meta">
+                        <span class="duration">⏱️ 12 мин</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Карточка 4 - Границы -->
+            <a href="boundaries.html" class="material-card">
+                <div class="card-image boundaries-bg">
+                    <div class="card-icon">🛡️</div>
+                </div>
+                <div class="card-content">
+                    <h4>Личные границы</h4>
+                    <p>Как выстраивать и защищать профессиональные границы для предотвращения выгорания</p>
+                    <div class="card-meta">
+                        <span class="duration">⏱️ 18 мин</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</main>
+
+<!-- Общий футер -->
+<footer>
+    <div class="footer-content">
+        <div class="footer-section">
+            <h3>Навигация</h3>
+            <div class="footer-links">
+                <a href="../index.html">Главная</a>
+                <a href="quick-help.html">Первая помощь</a>
+                <a href="daily.html">На каждый день</a>
+                <a href="materials.html">Материалы</a>
+                <a href="organizational.html">Для организации</a>
+                <a href="emergency.html">Экстренная помощь</a>
+                <a href="tests.html">Тесты</a>
+            </div>
+        </div>
+        
+        <div class="footer-section">
+            <h3>Контакты</h3>
+            <div class="contact-info">
+                <p>💬 Буду рад вашей обратной связи</p>
+                <p>📧 контакты:</p>
+                <div class="contact-links">
+                    <a href="mailto:aidarmentalhelp@gmail.com" class="contact-link">
+                        📩 Email
+                    </a>
+                    <a href="https://t.me/ChiefmacD" target="_blank" class="contact-link">
+                        ✈️ Telegram
+                    </a>
+                    <a href="https://wa.me/79068400712" target="_blank" class="contact-link">
+                        💬 WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-section">
+            <h3>Юридическая информация</h3>
+            <div class="legal-links">
+                <a href="legal/privacy.html">Политика конфиденциальности</a>
+                <a href="legal/terms.html">Пользовательское соглашение</a>
+                <a href="legal/consent.html">Согласие на обработку данных</a>
+                <a href="legal/cookies.html">Использование cookies</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer-bottom">
+        <p>© 2024 Анти-выгорание. Профилактика профессионального выгорания у медицинских работников</p>
+    </div>
+</footer>
+
+<!-- Фиксированное меню -->
+<div class="floating-menu">
+    <button class="menu-button">📋</button>
+    <div class="dropdown-content">
+        <a href="../index.html"><span>⭐</span> Главная</a>
+        <a href="quick-help.html"><span>🚀</span> Первая помощь</a>
+        <a href="daily.html"><span>📅</span> На каждый день</a>
+        <a href="materials.html"><span>📚</span> Материалы</a>
+        <a href="organizational.html"><span>🏥</span> Для организации</a>
+        <a href="emergency.html"><span>🆘</span> Экстренная помощь</a>
+        <a href="tests.html"><span>📝</span> Тесты</a>
+    </div>
+</div>
+
+<!-- Подключаем общие скрипты -->
+<script type="module" src="../assets/js/main.js"></script>
+
+</body>
+</html>

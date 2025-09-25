@@ -1,0 +1,193 @@
+/* Базовые сбросы и импорты */
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;700&family=Roboto:wght@300;400;500&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #2c3e50;
+    --secondary: #3498db;
+    --accent: #e74c3c;
+    --light: #ecf0f1;
+    --success: #2ecc71;
+    --warning: #f39c12;
+    --dark-bg: #1a2530;
+    --text-dark: #333;
+    --text-light: #666;
+    --shadow: 0 4px 12px rgba(0,0,0,0.08);
+    --shadow-hover: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    line-height: 1.6;
+    color: var(--text-dark);
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f8f9fa;
+    position: relative;
+    padding-bottom: 70px;
+}
+
+/* Типография */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Roboto Slab', serif;
+    color: var(--primary);
+    margin-bottom: 1rem;
+}
+
+h1 { font-size: 2.8rem; }
+h2 { font-size: 2.2rem; }
+h3 { font-size: 1.8rem; }
+h4 { font-size: 1.5rem; }
+
+p {
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+a {
+    color: var(--secondary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--primary);
+}
+
+/* Утилитные классы */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.mb-1 { margin-bottom: 1rem; }
+.mb-2 { margin-bottom: 2rem; }
+.mt-1 { margin-top: 1rem; }
+.mt-2 { margin-top: 2rem; }
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Анимации */
+@keyframes fadeIn {
+    from { 
+        opacity: 0; 
+        transform: translateY(10px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    body {
+        padding: 15px;
+        padding-bottom: 80px;
+    }
+    
+    h1 { font-size: 2.2rem; }
+    h2 { font-size: 1.8rem; }
+    h3 { font-size: 1.5rem; }
+    
+    .container {
+        padding: 0 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+        padding-bottom: 90px;
+    }
+    
+    h1 { font-size: 1.8rem; }
+    h2 { font-size: 1.5rem; }
+}
+/* Улучшенная адаптивность для мобильных */
+@media (max-width: 768px) {
+    .main-title {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .serious-title {
+        font-size: 2rem;
+        text-align: center;
+    }
+    
+    .stethoscope {
+        font-size: 1.8rem;
+    }
+    
+    .header-menu {
+        position: static;
+        margin-bottom: 1rem;
+    }
+    
+    .header-dropdown {
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+    }
+    
+    .info-card, 
+    .welcome-section, 
+    .burnout-info {
+        padding: 1rem;
+        margin: 0.5rem 0;
+    }
+    
+    .test-section {
+        padding: 1.5rem;
+    }
+    
+    .test-description {
+        padding: 1rem;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+    
+    h1 {
+        font-size: 1.8rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+    
+    .mbi-link,
+    .header-test-btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+    
+    .floating-menu {
+        bottom: 10px;
+        right: 10px;
+    }
+    
+    .menu-button {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+    }
+}

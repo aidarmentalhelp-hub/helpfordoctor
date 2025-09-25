@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Опросник на выгорание MBI | Анти-выгорание</title>
+    
+    <!-- Подключаем CSS -->
+    <link rel="stylesheet" href="/AB/assets/css/style.css">
+    <link rel="stylesheet" href="/AB/assets/css/header.css">
+    <link rel="stylesheet" href="/AB/assets/css/components.css">
+    
+    <style>
+        /* Стили для теста */
+        .test-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem auto;
+            max-width: 800px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        
+        .progress-bar {
+            width: 100%;
+            background: #ecf0f1;
+            border-radius: 10px;
+            margin: 2rem 0;
+            height: 12px;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #2980b9);
+            border-radius: 10px;
+            width: 0%;
+            transition: width 0.5s ease-in-out;
+        }
+        
+        .question-block {
+            display: none;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 10px;
+            background: #f8f9fa;
+        }
+        
+        .question-block.active {
+            display: block;
+        }
+        
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+        }
+        
+        .options-container {
+            display: grid;
+            gap: 0.8rem;
+        }
+        
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .option-label:hover {
+            border-color: #3498db;
+            background: #e8f4fc;
+        }
+        
+        .option-label input[type="radio"] {
+            margin-right: 1rem;
+            transform: scale(1.2);
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            gap: 1rem;
+        }
+        
+        .nav-btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn.prev {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .nav-btn.next {
+            background: #3498db;
+            color: white;
+        }
+        
+        .nav-btn.finish {
+            background: #28a745;
+            color: white;
+        }
+        
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .nav-btn:disabled {
+            background: #ced4da;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            display: none;
+            border-left: 4px solid #dc3545;
+        }
+        
+        .question-error {
+            color: #dc3545;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        
+        .result-container {
+            display: none;
+        }
+        
+        .scale-result {
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 10px;
+            border-left: 5px solid #3498db;
+        }
+        
+        .scale-result.high {
+            border-left-color: #e74c3c;
+            background: #fdedec;
+        }
+        
+        .scale-result.medium {
+            border-left-color: #f39c12;
+            background: #fef5e7;
+        }
+        
+        .scale-result.low {
+            border-left-color: #2ecc71;
+            background: #eafaf1;
+        }
+        
+        .restart-btn {
+            background: #17a2b8;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .restart-btn:hover {
+            background: #138496;
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 768px) {
+            .test-container {
+                padding: 1rem;
+                margin: 1rem;
+            }
+            
+            .nav-buttons {
+                flex-direction: column;
+            }
+            
+            .nav-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <!-- Верхнее выпадающее меню -->
+    <div class="header-menu">
+        <button class="header-menu-button">☰ Меню</button>
+        <div class="header-dropdown">
+            <a href="../index.html"><span>⭐</span> Главная</a>
+            <a href="quick-help.html"><span>🚀</span> Первая помощь</a>
+            <a href="daily.html"><span>📅</span> На каждый день</a>
+            <a href="materials.html"><span>📚</span> Материалы</a>
+            <a href="organizational.html"><span>🏥</span> Для организации</a>
+            <a href="emergency.html"><span>🆘</span> Экстренная помощь</a>
+            <a href="tests.html"><span>📝</span> Тесты</a>
+        </div>
+    </div>
+
+    <div class="main-title">
+        <span class="stethoscope">🩺</span>
+        <h1 class="serious-title">
+            <a href="../index.html">Давай тушить!</a>
+        </h1>
+        <span class="stethoscope">🩺</span>
+    </div>
+    <p class="subtitle">Профилактика профессионального выгорания у медицинских работников</p>
+    
+    <!-- Кнопка теста в шапке -->
+    <div>
+        <a href="https://aidarmentalhelp-hub.github.io/mbitest/" target="_blank" class="header-test-btn">
+            🔍 Пройти тест на выгорание 🔍
+        </a>
+    </div>
+</header>
+
+<div class="test-container">
+    <div id="intro">
+        <h1>Опросник на определение уровня психического выгорания (MBI)</h1>
+        <p><strong>Авторы:</strong> американские психологи К. Маслач и С. Джексон. Адаптирован Н.Е. Водопьяновой.</p>
+        <p>Ответьте, пожалуйста, как часто Вы испытываете чувства, перечисленные ниже в опроснике. Выберите по каждому пункту позицию, которая соответствует частоте Ваших мыслей и переживаний.</p>
+        
+        <div class="warning-note">
+            <strong>⚠️ ВАЖНАЯ ИНФОРМАЦИЯ</strong><br>
+            Данный ресурс не является медицинской помощью и не предоставляет медицинские услуги. 
+            Представленные материалы носят исключительно информационно-образовательный характер.<br>
+            Опросник MBI предназначен для самодиагностики и не ставит медицинских диагнозов. 
+            Для постановки диагноза и получения профессиональной помощи обратитесь к квалифицированному специалисту.
+        </div>
+        
+        <button id="start-btn" class="nav-btn next">Начать тест</button>
+    </div>
+
+    <div class="progress-bar">
+        <div class="progress" id="progress"></div>
+    </div>
+
+    <div class="error-message" id="error-message">
+        Пожалуйста, ответьте на все вопросы перед завершением теста.
+    </div>
+
+    <form id="quiz-form">
+        <!-- Вопросы будут сгенерированы скриптом -->
+    </form>
+
+    <div id="result" class="result-container">
+        <h2>Ваши результаты</h2>
+        <div id="scale-emotion"></div>
+        <div id="scale-deperson"></div>
+        <div id="scale-reduction"></div>
+        <button id="restart-btn" class="restart-btn">Пройти еще раз</button>
+    </div>
+</div>
+
+<!-- Футер -->
+<footer>
+    <div class="footer-content">
+        <div class="footer-section">
+            <h3>Навигация</h3>
+            <div class="footer-links">
+                <a href="../index.html">Главная</a>
+                <a href="quick-help.html">Первая помощь</a>
+                <a href="daily.html">На каждый день</a>
+                <a href="materials.html">Материалы</a>
+                <a href="organizational.html">Для организации</a>
+                <a href="emergency.html">Экстренная помощь</a>
+                <a href="tests.html">Тесты</a>
+            </div>
+        </div>
+        
+        <div class="footer-section">
+            <h3>Контакты</h3>
+            <div class="contact-info">
+                <p>💬 Буду рад вашей обратной связи</p>
+                <div class="contact-links">
+                    <a href="mailto:aidarmentalhelp@gmail.com" class="contact-link">
+                        📩 Email
+                    </a>
+                    <a href="https://t.me/ChiefmacD" target="_blank" class="contact-link">
+                        ✈️ Telegram
+                    </a>
+                    <a href="https://wa.me/79068400712" target="_blank" class="contact-link">
+                        💬 WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-section">
+            <h3>Юридическая информация</h3>
+            <div class="legal-links">
+                <a href="privacy.html">Политика конфиденциальности</a>
+                <a href="terms.html">Пользовательское соглашение</a>
+                <a href="consent.html">Согласие на обработку данных</a>
+                <a href="cookies.html">Использование cookies</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer-bottom">
+        <p>© 2024 Анти-выгорание. Профилактика профессионального выгорания у медицинских работников</p>
+    </div>
+</footer>
+
+<!-- Фиксированное меню -->
+<div class="floating-menu">
+    <button class="menu-button">📋</button>
+    <div class="dropdown-content">
+        <a href="../index.html"><span>⭐</span> Главная</a>
+        <a href="quick-help.html"><span>🚀</span> Первая помощь</a>
+        <a href="daily.html"><span>📅</span> На каждый день</a>
+        <a href="materials.html"><span>📚</span> Материалы</a>
+        <a href="organizational.html"><span>🏥</span> Для организации</a>
+        <a href="emergency.html"><span>🆘</span> Экстренная помощь</a>
+        <a href="tests.html"><span>📝</span> Тесты</a>
+    </div>
+</div>
+
+<!-- Скрипт теста -->
+<script>
+    // Массив с вопросами
+    const questions = [
+        "1. Я чувствую себя эмоционально опустошенным",
+        "2. После работы я чувствую себя, как «выжатый лимон»",
+        "3. Утром я чувствую усталость и нежелание идти на работу",
+        "4. Я хорошо понимаю, что чувствуют мои коллеги, пациенты и стараюсь учитывать это в интересах дела",
+        "5. Я чувствую, что общаюсь с некоторыми коллегами, пациентами без теплоты и расположения к ним",
+        "6. После работы мне на некоторое время хочется уединиться",
+        "7. Я умею находить правильное решение в конфликтных ситуациях, возникающих при общении",
+        "8. Я чувствую угнетенность и апатию",
+        "9. Я уверена, что моя работа нужна людям",
+        "10. В последнее время я стала более черствой по отношению к тем, с кем я работаю",
+        "11. Я замечаю, что моя работа ожесточает меня",
+        "12. У меня много планов на будущее, и я верю в их осуществление",
+        "13. Моя работа все больше меня разочаровывает",
+        "14. Мне кажется, что я слишком много работаю",
+        "15. Бывает, что мне действительно безразлично то, что происходит с некоторыми моими подчиненными/ воспитанниками и коллегами",
+        "16. Мне хочется уединиться и отдохнуть от всего и всех",
+        "17. Я легко могу создать атмосферу доброжелательности и сотрудничества в коллективе",
+        "18. Во время работы я чувствую приятное оживление",
+        "19. Благодаря своей работе я уже сделал в жизни много действительно ценного",
+        "20. Я чувствую равнодушие и потерю интереса ко многому, что радовало меня в моей работе",
+        "21. На работе я спокойно справляюсь с эмоциональными проблемам",
+        "22. В последнее время мне кажется, что коллеги и подчиненные, пациенты все чаще перекладывают на меня груз своих проблем и обязанностей."
+    ];
+
+    const options = ["Никогда", "Очень редко", "Иногда", "Часто", "Очень часто", "Каждый день"];
+    
+    // Баллы для прямых вопросов (1, 2, 3, 5, 6, 8, 10, 11, 13, 14, 15, 16, 20, 22)
+    const directScores = [0, 1, 3, 4, 5, 6];
+    
+    // Баллы для обратных вопросов (4, 7, 9, 12, 17, 18, 19, 21) - инвертированная шкала
+    const reverseScores = [6, 5, 4, 3, 1, 0];
+
+    const form = document.getElementById('quiz-form');
+    const startBtn = document.getElementById('start-btn');
+    const restartBtn = document.getElementById('restart-btn');
+    const introDiv = document.getElementById('intro');
+    const resultDiv = document.getElementById('result');
+    const progressBar = document.getElementById('progress');
+    const errorMessage = document.getElementById('error-message');
+
+    let currentQuestion = 0;
+
+    // Создание вопросов на странице
+    questions.forEach((question, index) => {
+        const questionDiv = document.createElement('div');
+        questionDiv.className = 'question-block';
+        questionDiv.id = `question-${index}`;
+        questionDiv.innerHTML = `
+            <div class="question-text">${question}</div>
+            <div class="question-error" id="error-${index}">Пожалуйста, выберите ответ чтобы продолжить</div>
+            <div class="options-container">
+        `;
+        
+        // Определяем тип вопроса (прямой или обратный)
+        const isReverseQuestion = [4, 7, 9, 12, 17, 18, 19, 21].includes(index + 1);
+        const scores = isReverseQuestion ? reverseScores : directScores;
+        
+        options.forEach((opt, optIndex) => {
+            questionDiv.querySelector('.options-container').innerHTML += `
+                <label class="option-label">
+                    <input type="radio" name="q${index}" value="${scores[optIndex]}" required 
+                           onchange="hideError(${index})">
+                    ${opt}
+                </label>
+            `;
+        });
+        
+        // Кнопки "Назад" и "Далее"
+        questionDiv.innerHTML += `
+            </div>
+            <div class="nav-buttons">
+                ${index > 0 ? `<button type="button" class="nav-btn prev" onclick="prevQuestion()">← Назад</button>` : '<span></span>'}
+                ${index < questions.length - 1 ? `<button type="button" class="nav-btn next" onclick="nextQuestion(${index})">Далее →</button>` : `<button type="button" class="nav-btn finish" onclick="finishTest()">Завершить тест</button>`}
+            </div>
+        `;
+        form.appendChild(questionDiv);
+    });
+
+    // Показать вопрос
+    function showQuestion(index) {
+        document.querySelectorAll('.question-block').forEach((q, i) => {
+            q.classList.toggle('active', i === index);
+        });
+        currentQuestion = index;
+        // Обновление прогресс-бара
+        progressBar.style.width = `${((index + 1) / questions.length) * 100}%`;
+        // Скрываем общее сообщение об ошибке
+        errorMessage.style.display = 'none';
+    }
+
+    // Скрыть ошибку для конкретного вопроса
+    function hideError(questionIndex) {
+        document.getElementById(`error-${questionIndex}`).style.display = 'none';
+    }
+
+    // Следующий вопрос
+    function nextQuestion(currentIndex) {
+        const currentQuestionAnswered = document.querySelector(`#question-${currentIndex} input:checked`);
+        
+        if (!currentQuestionAnswered) {
+            // Показываем ошибку для текущего вопроса
+            document.getElementById(`error-${currentIndex}`).style.display = 'block';
+            return;
+        }
+        
+        showQuestion(currentIndex + 1);
+    }
+
+    // Предыдущий вопрос
+    function prevQuestion() {
+        if (currentQuestion > 0) {
+            showQuestion(currentQuestion - 1);
+        }
+    }
+
+    // Завершение теста
+    function finishTest() {
+        const lastQuestionAnswered = document.querySelector(`#question-${questions.length - 1} input:checked`);
+        
+        if (!lastQuestionAnswered) {
+            // Показываем ошибку для последнего вопроса
+            document.getElementById(`error-${questions.length - 1}`).style.display = 'block';
+            return;
+        }
+        
+        // Проверяем, все ли вопросы отвечены
+        if (!allQuestionsAnswered()) {
+            errorMessage.style.display = 'block';
+            errorMessage.scrollIntoView({ behavior: 'smooth' });
+            return;
+        }
+
+        // Если все ответы есть, обрабатываем результаты
+        processResults();
+    }
+
+    // Проверить, все ли вопросы отвечены
+    function allQuestionsAnswered() {
+        for (let i = 0; i < questions.length; i++) {
+            const questionAnswered = document.querySelector(`input[name="q${i}"]:checked`);
+            if (!questionAnswered) {
+                // Показываем вопрос с пропущенным ответом
+                showQuestion(i);
+                document.getElementById(`error-${i}`).style.display = 'block';
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Обработка результатов
+    function processResults() {
+        errorMessage.style.display = 'none';
+
+        const formData = new FormData(form);
+        let scores = [];
+
+        for (let i = 0; i < questions.length; i++) {
+            scores.push(parseInt(formData.get(`q${i}`)));
+        }
+
+        // Подсчет баллов по шкалам
+        const emotionQuestions = [1, 2, 3, 6, 8, 13, 14, 16, 20];
+        let emotionScore = emotionQuestions.reduce((sum, qIndex) => sum + scores[qIndex - 1], 0);
+
+        const depersonQuestions = [5, 10, 11, 15, 22];
+        let depersonScore = depersonQuestions.reduce((sum, qIndex) => sum + scores[qIndex - 1], 0);
+
+        const reductionQuestions = [4, 7, 9, 12, 17, 18, 19, 21];
+        let reductionScore = reductionQuestions.reduce((sum, qIndex) => sum + scores[qIndex - 1], 0);
+
+        // Интерпретация результатов
+        function getEmotionInterpretation(score) {
+            if (score <= 10) return {level: "Крайне низкий", class: "low"};
+            if (score <= 20) return {level: "Низкий", class: "low"};
+            if (score <= 30) return {level: "Средний", class: "medium"};
+            if (score <= 40) return {level: "Высокий", class: "high"};
+            return {level: "Крайне высокий", class: "high"};
+        }
+
+        function getDepersonInterpretation(score) {
+            if (score <= 5) return {level: "Крайне низкий", class: "low"};
+            if (score <= 11) return {level: "Низкий", class: "low"};
+            if (score <= 17) return {level: "Средний", class: "medium"};
+            if (score <= 23) return {level: "Высокий", class: "high"};
+            return {level: "Крайне высокий", class: "high"};
+        }
+
+        function getReductionInterpretation(score) {
+            if (score <= 8) return {level: "Крайне низкий", class: "low"};
+            if (score <= 18) return {level: "Низкий", class: "low"};
+            if (score <= 28) return {level: "Средний", class: "medium"};
+            if (score <= 38) return {level: "Высокий", class: "high"};
+            return {level: "Крайне высокий", class: "high"};
+        }
+
+        const emotionResult = getEmotionInterpretation(emotionScore);
+        const depersonResult = getDepersonInterpretation(depersonScore);
+        const reductionResult = getReductionInterpretation(reductionScore);
+
+        // Вывод результатов
+        document.getElementById('scale-emotion').innerHTML = 
+            `<div class="scale-result ${emotionResult.class}">
+                <strong>Психоэмоциональное истощение:</strong> ${emotionScore} баллов (${emotionResult.level} уровень)<br>
+                <em>Процесс исчерпания эмоциональных, физических, энергетических ресурсов.</em>
+            </div>`;
+
+        document.getElementById('scale-deperson').innerHTML = 
+            `<div class="scale-result ${depersonResult.class}">
+                <strong>Деперсонализация:</strong> ${depersonScore} баллов (${depersonResult.level} уровень)<br>
+                <em>Личностное отдаление, проявляющееся в уменьшении контактов и повышении раздражительности.</em>
+            </div>`;
+
+        document.getElementById('scale-reduction').innerHTML = 
+            `<div class="scale-result ${reductionResult.class}">
+                <strong>Редукция личных достижений:</strong> ${reductionScore} баллов (${reductionResult.level} уровень)<br>
+                <em>Снижение чувства компетентности в своей работе, недовольство собой.</em>
+            </div>`;
+
+        form.style.display = 'none';
+        resultDiv.style.display = 'block';
+        document.querySelector('.progress-bar').style.display = 'none';
+    }
+
+    // Начать тест
+    startBtn.addEventListener('click', () => {
+        introDiv.style.display = 'none';
+        form.style.display = 'block';
+        document.querySelector('.progress-bar').style.display = 'block';
+        showQuestion(0);
+    });
+
+    // Перезапустить тест
+    restartBtn.addEventListener('click', () => {
+        resultDiv.style.display = 'none';
+        form.reset();
+        form.style.display = 'none';
+        introDiv.style.display = 'block';
+        document.querySelector('.progress-bar').style.display = 'none';
+        currentQuestion = 0;
+        progressBar.style.width = '0%';
+    });
+
+    // Делаем функции глобальными для работы кнопок навигации
+    window.showQuestion = showQuestion;
+    window.nextQuestion = nextQuestion;
+    window.prevQuestion = prevQuestion;
+    window.hideError = hideError;
+    window.finishTest = finishTest;
+</script>
+
+<!-- Подключаем общие скрипты -->
+<script type="module" src="/AB/assets/js/main.js"></script>
+
+</body>
+</html>

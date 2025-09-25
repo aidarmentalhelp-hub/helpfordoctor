@@ -1,0 +1,219 @@
+/* Стили для страницы "На каждый день" */
+.daily-section {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow);
+}
+
+.daily-section h2 {
+    text-align: center;
+    color: var(--primary);
+    margin-bottom: 1.5rem;
+}
+
+.technique {
+    background: white;
+    border: 2px solid var(--light);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    transition: all 0.3s;
+}
+
+.technique:hover {
+    border-color: var(--secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.technique h3 {
+    color: var(--primary);
+    margin-top: 0;
+    text-align: center;
+    font-size: 1.4rem;
+}
+
+.technique-content {
+    margin-top: 1rem;
+}
+
+.technique-content ol,
+.technique-content ul {
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.technique-content li {
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+}
+
+.technique-content strong {
+    color: var(--primary);
+}
+
+/* Карточки */
+.card {
+    background: var(--light);
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin: 1rem 0;
+    border-left: 5px solid var(--secondary);
+    transition: all 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.card.success {
+    border-left-color: var(--success);
+    background: #eafaf1;
+}
+
+.card.warning {
+    border-left-color: var(--warning);
+    background: #fef9e7;
+}
+
+.card h4 {
+    color: var(--primary);
+    margin-top: 0;
+    margin-bottom: 0.8rem;
+    font-size: 1.1rem;
+}
+
+/* Чек-лист */
+.b-checklist {
+    list-style: none;
+    padding-left: 0;
+}
+
+.b-checklist li {
+    padding-left: 30px;
+    position: relative;
+    margin-bottom: 0.8rem;
+    line-height: 1.4;
+}
+
+.b-checklist li:before {
+    content: "✅";
+    position: absolute;
+    left: 0;
+    font-size: 1.2em;
+}
+
+/* Таймеры */
+.timer-display {
+    font-size: 3rem;
+    font-weight: bold;
+    text-align: center;
+    color: var(--primary);
+    margin: 1rem 0;
+    font-family: 'Courier New', monospace;
+    transition: color 0.3s ease;
+}
+
+.timer-btn {
+    background: var(--secondary);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    margin: 0 5px;
+    transition: all 0.3s;
+    min-width: 160px;
+}
+
+.timer-btn:hover {
+    background: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.timer-btn.stop {
+    background: var(--accent);
+}
+
+.timer-btn.stop:hover {
+    background: #c0392b;
+}
+
+.timer-controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 1rem 0;
+    flex-wrap: wrap;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .daily-section {
+        padding: 1.5rem;
+    }
+    
+    .technique {
+        padding: 1.2rem;
+        margin: 1rem 0;
+    }
+    
+    .technique h3 {
+        font-size: 1.2rem;
+    }
+    
+    .card {
+        padding: 1.2rem;
+    }
+    
+    .timer-display {
+        font-size: 2.5rem;
+    }
+    
+    .timer-controls {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    .timer-btn {
+        width: 200px;
+        margin: 5px 0;
+        min-width: 140px;
+    }
+    
+    .b-checklist li {
+        padding-left: 25px;
+    }
+}
+
+@media (max-width: 480px) {
+    .technique-content ol,
+    .technique-content ul {
+        padding-left: 1.2rem;
+    }
+    
+    .timer-display {
+        font-size: 2rem;
+    }
+    
+    .timer-btn {
+        padding: 10px 20px;
+        min-width: 120px;
+        font-size: 0.9rem;
+    }
+    
+    .card {
+        padding: 1rem;
+    }
+    
+    .b-checklist li {
+        padding-left: 20px;
+        font-size: 0.9rem;
+    }
+}
