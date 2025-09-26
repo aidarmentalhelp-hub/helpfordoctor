@@ -12,6 +12,318 @@
     
     <!-- Стили конкретной страницы -->
     <link rel="stylesheet" href="../assets/css/pages/quick-help.css">
+    
+    <style>
+        /* Стили для всплывающего окна */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #999;
+        }
+        
+        .modal-close:hover {
+            color: #333;
+        }
+        
+        .modal-title {
+            color: #2ecc71;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .modal-message {
+            color: #333;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+        
+        .modal-btn:hover {
+            background: #2980b9;
+        }
+        
+        /* Стили для спойлеров */
+        .technique-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            padding: 1rem 1.5rem;
+            background: rgba(173, 216, 230, 0.7);
+            border-radius: 10px 10px 0 0;
+            margin-bottom: 0;
+            transition: all 0.3s;
+            border: 1px solid rgba(143, 196, 211, 0.5);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+        
+        .technique-header:hover {
+            background: rgba(173, 216, 230, 0.9);
+        }
+        
+        .technique-header h3 {
+            margin: 0;
+            color: #2c3e50;
+            font-size: 1.4rem;
+        }
+        
+        .technique-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s;
+            color: #3498db;
+        }
+        
+        .technique-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background: rgba(240, 248, 255, 0.9);
+            border-radius: 0 0 10px 10px;
+            border: 1px solid rgba(173, 216, 230, 0.5);
+            border-top: none;
+        }
+        
+        .technique.active .technique-content {
+            max-height: 2000px;
+            padding: 1.5rem;
+        }
+        
+        .technique.active .technique-icon {
+            transform: rotate(180deg);
+        }
+        
+        .technique {
+            margin: 1.5rem 0;
+            border-radius: 10px;
+            background: transparent;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Стили для контента методик */
+        .technique-content p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            text-align: justify;
+        }
+        
+        .technique-content ol, .technique-content ul {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+        
+        .technique-content li {
+            margin-bottom: 0.8rem;
+            line-height: 1.5;
+            font-size: 1rem;
+            color: #34495e;
+        }
+        
+        .technique-content strong {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        .technique-tip {
+            background: rgba(46, 204, 113, 0.1);
+            border-left: 4px solid #2ecc71;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .technique-tip p {
+            margin: 0;
+            color: #27ae60;
+            font-style: italic;
+        }
+        
+        /* Стили для таймеров и кнопок */
+        .timer-display {
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin: 1.5rem 0;
+            color: #2c3e50;
+            font-family: 'Courier New', monospace;
+            background: rgba(52, 152, 219, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            border: 2px solid #3498db;
+        }
+        
+        .timer-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .timer-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .timer-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        
+        .timer-btn.stop {
+            background: #e74c3c;
+        }
+        
+        .timer-btn.stop:hover {
+            background: #c0392b;
+        }
+        
+        .help-btn {
+            background: #2ecc71;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .help-btn:hover {
+            background: #27ae60;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        
+        .help-btn.more {
+            background: #3498db;
+        }
+        
+        .help-btn.more:hover {
+            background: #2980b9;
+        }
+        
+        .help-btn.stop {
+            background: #e74c3c;
+        }
+        
+        .help-btn.stop:hover {
+            background: #c0392b;
+        }
+        
+        .task-display {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        .help-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .help-container {
+            text-align: center;
+            margin: 2rem 0;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .technique-header {
+                padding: 0.8rem 1rem;
+            }
+            
+            .technique-header h3 {
+                font-size: 1.2rem;
+            }
+            
+            .timer-display {
+                font-size: 2rem;
+                padding: 0.8rem;
+            }
+            
+            .timer-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .timer-btn {
+                width: 200px;
+            }
+        }
+    </style>
 </head>
 <body>
 
@@ -47,24 +359,34 @@
 <!-- Уникальный контент страницы -->
 <main>
     <div class="quick-help-section">
-        <h2 class="section-title">🚀 Техники "скорой помощи" (5-7 минут)</h2>
+        <h2 class="section-title">🚀 Техники "скорой помощи"</h2>
         <p class="section-subtitle">Быстрые методы для мгновенного снятия напряжения и стресса</p>
     </div>
 
     <!-- Дыхание 4-7-8 -->
     <div class="technique">
-        <h3 class="technique-title">🌬️ Дыхание 4-7-8</h3>
+        <div class="technique-header" onclick="toggleTechnique(this)">
+            <h3>🌬️ Дыхание 4-2-6</h3>
+            <span class="technique-icon">▼</span>
+        </div>
         <div class="technique-content">
-            <p>Техника для мгновенного снятия напряжения и успокоения нервной системы:</p>
+            <p><strong>Техника для мгновенного снятия напряжения и успокоения нервной системы.</strong> Этот метод помогает быстро восстановить контроль над дыханием и снизить уровень стресса.</p>
+            
             <ol>
-                <li>Вдох через нос на 4 счета</li>
-                <li>Задержка дыхания на 7 счетов</li>
-                <li>Медленный выдох через рот на 8 счетов</li>
-                <li>Повторить 5-10 циклов</li>
+                <li><strong>Сосредоточьтесь:</strong> Представьте лёгкое пёрышко на кончике носа и подышите так, чтобы оно не улетело</li>
+                <li><strong>Вдох:</strong> Медленный вдох через нос в течение <strong>4 секунд</strong></li>
+                <li><strong>Задержка:</strong> Задержите дыхание на <strong>2 секунды</strong></li>
+                <li><strong>Выдох:</strong> Плавный выдох через рот в течение <strong>6 секунд</strong></li>
+                <li><strong>Повторение:</strong> Выполните <strong>5-10 циклов</strong> для достижения эффекта</li>
             </ol>
-            <div class="timer-display" id="breath-timer">05:00</div>
+            
+            <div class="technique-tip">
+                <p>💡 <strong>Совет:</strong> Выполняйте упражнение сидя в удобной позе, закрыв глаза для лучшей концентрации.</p>
+            </div>
+            
+            <div class="timer-display" id="breath-timer">03:00</div>
             <div class="timer-controls">
-                <button class="timer-btn" onclick="startTimer('breath')">▶️ Запустить</button>
+                <button class="timer-btn" onclick="startTimer('breath')">▶️ Запустить таймер</button>
                 <button class="timer-btn stop" onclick="stopTimer('breath')">⏹️ Остановить</button>
             </div>
         </div>
@@ -72,19 +394,28 @@
 
     <!-- Метод "Позвольте себе потревожиться" -->
     <div class="technique">
-        <h3 class="technique-title">⏰ Метод "Позвольте себе потревожиться"</h3>
+        <div class="technique-header" onclick="toggleTechnique(this)">
+            <h3>⏰ Метод "Позвольте себе потревожиться"</h3>
+            <span class="technique-icon">▼</span>
+        </div>
         <div class="technique-content">
-            <p>Целенаправленное выделение времени для тревоги помогает контролировать её:</p>
+            <p><strong>Целенаправленное выделение времени для тревоги помогает контролировать её.</strong> Вместо того чтобы бороться с тревожными мыслями, мы даем им ограниченное пространство и время.</p>
+            
             <ol>
-                <li>Поставьте таймер на 5 минут</li>
-                <li>Позвольте себе полностью погрузиться в тревожные мысли</li>
-                <li>Не сопротивляйтесь, а полностью "потревожьтесь"</li>
-                <li>Когда таймер сработает, скажите: "Время тревоги закончено"</li>
-                <li>Переключитесь на конкретное действие</li>
+                <li><strong>Установите границы:</strong> Поставьте таймер на <strong>5 минут</strong></li>
+                <li><strong>Погружение:</strong> Позвольте себе полностью погрузиться в тревожные мысли</li>
+                <li><strong>Принятие:</strong> Не сопротивляйтесь, а полностью "потревожьтесь" в отведенное время</li>
+                <li><strong>Завершение:</strong> Когда таймер сработает, скажите: <strong>"Время тревоги закончено"</strong></li>
+                <li><strong>Переключение:</strong> Немедленно переключитесь на конкретное действие или задачу</li>
             </ol>
-            <div class="timer-display" id="worry-timer">05:00</div>
+            
+            <div class="technique-tip">
+                <p>💡 <strong>Важно:</strong> Этот метод учит мозг тому, что тревога имеет свое место и время, а не может захватывать все внимание.</p>
+            </div>
+            
+            <div class="timer-display" id="worry-timer">03:00</div>
             <div class="timer-controls">
-                <button class="timer-btn" onclick="startTimer('worry')">▶️ Запустить</button>
+                <button class="timer-btn" onclick="startTimer('worry')">▶️ Запустить таймер</button>
                 <button class="timer-btn stop" onclick="stopTimer('worry')">⏹️ Остановить</button>
             </div>
         </div>
@@ -92,20 +423,28 @@
 
     <!-- Заземление 5-4-3-2-1 -->
     <div class="technique">
-        <h3 class="technique-title">🌍 Заземление 5-4-3-2-1</h3>
+        <div class="technique-header" onclick="toggleTechnique(this)">
+            <h3>🌍 Заземление 5-4-3-2-1</h3>
+            <span class="technique-icon">▼</span>
+        </div>
         <div class="technique-content">
-            <p>Вернитесь в "здесь и сейчас", когда чувствуете перегрузку:</p>
+            <p><strong>Вернитесь в "здесь и сейчас", когда чувствуете перегрузку.</strong> Эта техника помогает отвлечься от тревожных мыслей и сосредоточиться на текущем моменте.</p>
+            
             <ul>
-                <li><strong>5</strong> вещей, которые вы видите вокруг себя</li>
-                <li><strong>4</strong> вещи, которые ощущаете (текстура, температура)</li>
-                <li><strong>3</strong> звука, которые слышите прямо сейчас</li>
-                <li><strong>2</strong> запаха, которые чувствуете</li>
-                <li><strong>1</strong> вкус (можно сделать глоток воды)</li>
+                <li><strong>5 вещей, которые вы видите</strong> вокруг себя (стол, окно, ручка, растение, книга)</li>
+                <li><strong>4 вещи, которые ощущаете</strong> (текстура ткани, температура воздуха, поверхность стола, собственное дыхание)</li>
+                <li><strong>3 звука, которые слышите</strong> прямо сейчас (разговоры, шум техники, шаги, собственное сердцебиение)</li>
+                <li><strong>2 запаха, которые чувствуете</strong> (кофе, воздух в помещении, собственные духи)</li>
+                <li><strong>1 вкус</strong> (можно сделать глоток воды, почувствовать вкус во рту)</li>
             </ul>
+            
+            <div class="technique-tip">
+                <p>💡 <strong>Совет:</strong> Выполняйте упражнение медленно, полностью концентрируясь на каждом ощущении.</p>
+            </div>
             
             <div class="help-container">
                 <div style="text-align: center; margin-bottom: 1rem;">
-                    <button class="help-btn" onclick="generateTask()">🎯 Помоги</button>
+                    <button class="help-btn" onclick="generateTask()">🎯 Сгенерировать задание</button>
                 </div>
                 
                 <div class="task-display" id="task-display" style="display: none;">
@@ -113,8 +452,8 @@
                 </div>
                 
                 <div class="help-controls" id="help-controls" style="display: none;">
-                    <button class="help-btn more" onclick="generateTask()">🔄 Еще</button>
-                    <button class="help-btn stop" onclick="resetHelp()">⏹️ Стоп</button>
+                    <button class="help-btn more" onclick="generateTask()">🔄 Новое задание</button>
+                    <button class="help-btn stop" onclick="resetHelp()">⏹️ Завершить</button>
                 </div>
             </div>
         </div>
@@ -122,51 +461,83 @@
 
     <!-- Техника "Заземление через тело" -->
     <div class="technique">
-        <h3 class="technique-title">💪 Техника "Заземление через тело"</h3>
+        <div class="technique-header" onclick="toggleTechnique(this)">
+            <h3>💪 Техника "Заземление через тело"</h3>
+            <span class="technique-icon">▼</span>
+        </div>
         <div class="technique-content">
-            <p>Быстрое сканирование тела и осознанное напряжение-расслабление мышц:</p>
+            <p><strong>Быстрое сканирование тела и осознанное напряжение-расслабление мышц.</strong> Этот метод помогает снять мышечное напряжение и мгновенно переключить нервную систему.</p>
+            
             <ol>
-                <li>Сядьте прямо, закройте глаза</li>
-                <li>Напрягите одновременно стопы, сожмите кулаки и стисните зубы на 5 секунд</li>
-                <li>Резко расслабьтесь на выдохе</li>
-                <li>Повторите 2-3 раза</li>
-                <li>Сосредоточьтесь на ощущениях расслабления в теле</li>
+                <li><strong>Поза:</strong> Сядьте прямо, закройте глаза, сделайте глубокий вдох</li>
+                <li><strong>Напряжение:</strong> Напрягите одновременно стопы, сожмите кулаки и стисните зубы на <strong>5 секунд</strong></li>
+                <li><strong>Расслабление:</strong> Резко расслабьтесь на выдохе, почувствуйте волну расслабления</li>
+                <li><strong>Повторение:</strong> Повторите упражнение <strong>2-3 раза</strong></li>
+                <li><strong>Осознание:</strong> Сосредоточьтесь на ощущениях расслабления в теле</li>
             </ol>
-            <p>Это снимает мышечные зажимы и мгновенно переключает нервную систему.</p>
+            
+            <div class="technique-tip">
+                <p>💡 <strong>Эффект:</strong> Метод активирует парасимпатическую нервную систему, отвечающую за расслабление и восстановление.</p>
+            </div>
         </div>
     </div>
 
     <!-- "Контейнирование" эмоций -->
     <div class="technique">
-        <h3 class="technique-title">📦 "Контейнирование" эмоций</h3>
+        <div class="technique-header" onclick="toggleTechnique(this)">
+            <h3>📦 "Контейнирование" эмоций</h3>
+            <span class="technique-icon">▼</span>
+        </div>
         <div class="technique-content">
-            <p>Метод для изоляции сильных негативных эмоций до лучшего момента:</p>
+            <p><strong>Метод для изоляции сильных негативных эмоций до лучшего момента.</strong> Позволяет временно отложить переживания, чтобы сосредоточиться на текущих задачах.</p>
+            
             <ol>
-                <li>Мысленно представьте себе прочный контейнер (сейф, шкатулка, сундук)</li>
-                <li>"Положите" в него все свои переживания, тревоги и раздражение</li>
-                <li>Закройте его на ключ</li>
-                <li>Скажите себе: "Я вернусь к этому позже, в подходящее время"</li>
-                <li>Вернитесь к контейнеру только когда будете готовы разобраться с эмоциями</li>
+                <li><strong>Визуализация:</strong> Мысленно представьте себе прочный контейнер (сейф, шкатулка, сундук)</li>
+                <li><strong>Помещение:</strong> "Положите" в него все свои переживания, тревоги и раздражение</li>
+                <li><strong>Защита:</strong> Закройте контейнер на ключ, представьте надежный замок</li>
+                <li><strong>Обещание:</strong> Скажите себе: <strong>"Я вернусь к этому позже, в подходящее время"</strong></li>
+                <li><strong>Возвращение:</strong> Вернитесь к контейнеру только когда будете готовы разобраться с эмоциями</li>
             </ol>
+            
+            <div class="technique-tip">
+                <p>💡 <strong>Важно:</strong> Не забывайте возвращаться к "контейнеру" в спокойной обстановке для обработки эмоций.</p>
+            </div>
         </div>
     </div>
 
     <!-- Холод -->
     <div class="technique">
-        <h3 class="technique-title">❄️ "Сброс" через холод</h3>
+        <div class="technique-header" onclick="toggleTechnique(this)">
+            <h3>❄️ "Сброс" через холод</h3>
+            <span class="technique-icon">▼</span>
+        </div>
         <div class="technique-content">
-            <p>Резкое переключение нервной системы через температурный раздражитель:</p>
+            <p><strong>Резкое переключение нервной системы через температурный раздражитель.</strong> Физиологический метод, основанный на реакции организма на холод.</p>
+            
             <ol>
-                <li>Выйдите в процедурный кабинет или к раковине</li>
-                <li>Умойте лицо и запястья ХОЛОДНОЙ водой</li>
-                <li>Сконцентрируйтесь на ощущении холода на коже на 10-15 секунд</li>
-                <li>Сделайте несколько глубоких вдохов</li>
-                <li>Повторите при необходимости</li>
+                <li><strong>Подготовка:</strong> Выйдите в процедурный кабинет или к раковине</li>
+                <li><strong>Воздействие:</strong> Умойте лицо и запястья <strong>ХОЛОДНОЙ водой</strong></li>
+                <li><strong>Концентрация:</strong> Сосредоточьтесь на ощущении холода на коже в течение <strong>10-15 секунд</strong></li>
+                <li><strong>Дыхание:</strong> Сделайте несколько глубоких вдохов и выдохов</li>
+                <li><strong>Повторение:</strong> Повторите при необходимости для усиления эффекта</li>
             </ol>
-            <p>Этот метод активирует парасимпатическую нервную систему и снижает тревогу.</p>
+            
+            <div class="technique-tip">
+                <p>💡 <strong>Научное обоснование:</strong> Холодовая стимуляция активирует парасимпатическую нервную систему и снижает уровень кортизола - гормона стресса.</p>
+            </div>
         </div>
     </div>
 </main>
+
+<!-- Всплывающее окно -->
+<div class="modal-overlay" id="modal">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeModal()">×</button>
+        <h3 class="modal-title">✅ Методика завершена</h3>
+        <p class="modal-message" id="modal-message">Таймер завершил свою работу. Вы успешно выполнили упражнение!</p>
+        <button class="modal-btn" onclick="closeModal()">Понятно</button>
+    </div>
+</div>
 
 <!-- Общий футер -->
 <footer>
@@ -231,8 +602,154 @@
 <!-- Подключаем общие скрипты -->
 <script type="module" src="../assets/js/main.js"></script>
 
-<!-- Подключаем скрипты -->
-<script type="module" src="../assets/js/pages/quick-help.js"></script>
+<script>
+    // Глобальные переменные
+    let timers = {};
+    let audio = null;
+    
+    // Массивы для генерации заданий
+    const colors = ['красных', 'оранжевых', 'желтых', 'зеленых', 'голубых', 'синих', 'фиолетовых', 
+                   'розовых', 'коричневых', 'черных', 'белых', 'серых'];
+    const objects = ['предметов', 'вещей', 'объектов', 'деталей', 'элементов', 'изделий', 'аксессуаров'];
+    
+    // Функция переключения спойлера методики
+    function toggleTechnique(element) {
+        const technique = element.parentElement;
+        technique.classList.toggle('active');
+    }
+    
+    // Функция запуска таймера
+    function startTimer(type) {
+        // Останавливаем предыдущий таймер, если он есть
+        if (timers[type]) {
+            clearInterval(timers[type]);
+        }
+        
+        const timerDisplay = document.getElementById(`${type}-timer`);
+        if (!timerDisplay) return;
+        
+        // Устанавливаем время 3 минуты (180 секунд)
+        let seconds = 180;
+        
+        // Меняем цвет таймера на активный
+        timerDisplay.style.color = '#e74c3c';
+        
+        // Запускаем таймер
+        timers[type] = setInterval(() => {
+            seconds--;
+            
+            // Форматируем время в формат ММ:СС
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+            
+            // Когда время истекло
+            if (seconds <= 0) {
+                clearInterval(timers[type]);
+                timers[type] = null;
+                timerDisplay.textContent = "00:00";
+                timerDisplay.style.color = '#2ecc71';
+                
+                // Воспроизводим звук и показываем уведомление
+                playCompletionSound();
+                showCompletionModal(type);
+            }
+        }, 1000);
+    }
+    
+    // Функция остановки таймера
+    function stopTimer(type) {
+        if (timers[type]) {
+            clearInterval(timers[type]);
+            timers[type] = null;
+        }
+        
+        const timerDisplay = document.getElementById(`${type}-timer`);
+        if (timerDisplay) {
+            timerDisplay.textContent = "03:00";
+            timerDisplay.style.color = '#2c3e50';
+        }
+    }
+    
+    // Функция воспроизведения звука завершения
+    function playCompletionSound() {
+        // Создаем элемент аудио
+        if (audio) {
+            audio.pause();
+            audio.currentTime = 0;
+        }
+        
+        audio = new Audio('../assets/sound/st.mp3');
+        
+        // Воспроизводим звук один раз
+        audio.play().catch(e => {
+            console.log("Автовоспроизведение звука заблокировано браузером");
+        });
+    }
+    
+    // Функция показа модального окна
+    function showCompletionModal(type) {
+        const modal = document.getElementById('modal');
+        const message = document.getElementById('modal-message');
+        
+        // Устанавливаем сообщение в зависимости от типа таймера
+        const timerNames = {
+            'breath': 'Дыхание 4-2-6',
+            'worry': 'Метод "Позвольте себе потревожиться"'
+        };
+        
+        const timerName = timerNames[type] || 'Упражнение';
+        message.textContent = `Таймер "${timerName}" завершил свою работу. Вы успешно выполнили упражнение!`;
+        
+        // Показываем модальное окно
+        modal.style.display = 'flex';
+    }
+    
+    // Функция закрытия модального окна
+    function closeModal() {
+        const modal = document.getElementById('modal');
+        modal.style.display = 'none';
+    }
+    
+    // Функция генерации задания для заземления
+    function generateTask() {
+        const randomNumber = Math.floor(Math.random() * 7) + 4; // от 4 до 10
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        const randomObject = objects[Math.floor(Math.random() * objects.length)];
+        
+        const taskText = `Найди ${randomNumber} ${randomColor} ${randomObject} в комнате`;
+        
+        // Показываем элементы
+        const taskDisplay = document.getElementById('task-display');
+        const helpControls = document.getElementById('help-controls');
+        
+        if (taskDisplay && helpControls) {
+            taskDisplay.textContent = taskText;
+            taskDisplay.style.display = 'block';
+            helpControls.style.display = 'flex';
+        }
+    }
+    
+    // Функция сброса помощи
+    function resetHelp() {
+        // Скрываем элементы
+        const taskDisplay = document.getElementById('task-display');
+        const helpControls = document.getElementById('help-controls');
+        
+        if (taskDisplay && helpControls) {
+            taskDisplay.style.display = 'none';
+            helpControls.style.display = 'none';
+        }
+    }
+    
+    // Закрытие модального окна при клике вне его
+    document.addEventListener('click', function(event) {
+        const modal = document.getElementById('modal');
+        if (event.target === modal) {
+            closeModal();
+        }
+    });
+</script>
 
 </body>
 </html>

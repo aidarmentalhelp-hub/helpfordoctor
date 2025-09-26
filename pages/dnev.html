@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дневник мыслей | Анти-выгорание для врачей</title>
+    
+    <!-- Подключаем общие CSS -->
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/header.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
+    
+    <!-- Стили конкретной страницы -->
+    <link rel="stylesheet" href="../assets/css/pages/thought-diary.css">
+    
+    <!-- Подключаем Chart.js для графиков -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        /* === СТИЛИ ДЛЯ СТРАНИЦЫ ДНЕВНИКА МЫСЛЕЙ === */
+        
+        /* Секция с описанием методики */
+        .methodology-section {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .methodology-section h2 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .methodology-section p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #34495e;
+            margin-bottom: 1rem;
+            text-align: justify;
+        }
+        
+        .methodology-section ol, .methodology-section ul {
+            margin: 1rem 0;
+            padding-left: 1.5rem;
+        }
+        
+        .methodology-section li {
+            margin-bottom: 0.8rem;
+            line-height: 1.5;
+        }
+        
+        .methodology-tip {
+            background: rgba(46, 204, 113, 0.1);
+            border-left: 4px solid #2ecc71;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .methodology-tip p {
+            margin: 0;
+            color: #27ae60;
+            font-style: italic;
+        }
+        
+        /* Стили для тренажера */
+        .trainer-section {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 1px solid #e0e0e0;
+        }
+        
+        .trainer-title {
+            text-align: center;
+            color: #3498db;
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+        }
+        
+        .trainer-step {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .trainer-step h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .step-number {
+            background: #3498db;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .trainer-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+            box-sizing: border-box;
+            transition: border 0.3s;
+        }
+        
+        .trainer-input:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+        
+        .trainer-textarea {
+            min-height: 100px;
+            resize: vertical;
+            font-family: inherit;
+        }
+        
+        .trainer-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+        
+        .trainer-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 1rem;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .trainer-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        
+        .trainer-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .trainer-btn.prev {
+            background: #95a5a6;
+        }
+        
+        .trainer-btn.prev:hover {
+            background: #7f8c8d;
+        }
+        
+        .trainer-btn.next {
+            background: #2ecc71;
+        }
+        
+        .trainer-btn.next:hover {
+            background: #27ae60;
+        }
+        
+        .trainer-btn.complete {
+            background: #2ecc71;
+            width: 100%;
+        }
+        
+        .trainer-btn.complete:hover {
+            background: #27ae60;
+        }
+        
+        /* Стили для добавления эмоций */
+        .emotion-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+        
+        .emotion-name {
+            flex: 1;
+        }
+        
+        .emotion-intensity {
+            width: 100px;
+        }
+        
+        .add-emotion-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        .remove-emotion-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Стили для доказательств */
+        .evidence-for {
+            border-left: 4px solid #e74c3c;
+            background: rgba(231, 76, 60, 0.05);
+        }
+        
+        .evidence-against {
+            border-left: 4px solid #2ecc71;
+            background: rgba(46, 204, 113, 0.05);
+        }
+        
+        /* Стили для отображения результата */
+        .result-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            text-align: center;
+            display: none;
+        }
+        
+        .result-title {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+        
+        .result-content {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            text-align: left;
+            backdrop-filter: blur(5px);
+        }
+        
+        .result-item {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .result-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .result-label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #e0e0e0;
+        }
+        
+        .result-value {
+            font-size: 1.1rem;
+        }
+        
+        /* Стили для графика */
+        .emotion-chart-container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+        }
+        
+        .emotion-change-summary {
+            background: rgba(46, 204, 113, 0.2);
+            border-left: 4px solid #2ecc71;
+            padding: 1rem;
+            border-radius: 0 8px 8px 0;
+            margin: 1rem 0;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .methodology-section, .trainer-section {
+                padding: 1rem;
+            }
+            
+            .trainer-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .trainer-btn {
+                width: 100%;
+            }
+            
+            .emotion-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .emotion-intensity {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Общая шапка -->
+<header>
+    <div class="main-title">
+        <span class="stethoscope">🩺</span>
+        <h1 class="serious-title">
+            <a href="../index.html" style="text-decoration: none; color: inherit;">Давай тушить!</a>
+        </h1>
+        <span class="stethoscope">🩺</span>
+    </div>
+    <p class="subtitle">Профилактика профессионального выгорания у медицинских работников</p>
+    
+    <!-- Новая навигационная панель -->
+    <nav class="main-navigation">
+        <a href="../index.html">🏠 Главная</a>
+        <a href="quick-help.html">🚀 Первая помощь</a>
+        <a href="thought-diary.html">📓 Дневник мыслей</a>
+        <a href="daily.html">📅 На каждый день</a>
+        <a href="materials.html">📚 Материалы</a>
+        <a href="tests.html">📝 Тесты</a>
+        <a href="#footer-contacts">📞 Контакты</a>
+    </nav>
+    
+    <!-- Кнопка теста в шапке -->
+    <div>
+        <a href="https://aidarmentalhelp-hub.github.io/mbitest/" target="_blank" class="header-test-btn">
+            🔍 Пройти тест на выгорание
+        </a>
+    </div>
+</header>
+
+<!-- Уникальный контент страницы -->
+<main>
+    <div class="quick-help-section">
+        <h2 class="section-title">📓 Дневник мыслей</h2>
+        <p class="section-subtitle">Метод когнитивно-поведенческой терапии для работы с автоматическими мыслями</p>
+    </div>
+
+    <!-- Описание методики -->
+    <section class="methodology-section">
+        <h2>Что такое дневник мыслей?</h2>
+        
+        <p>Дневник мыслей — это мощный инструмент когнитивно-поведенческой терапии, который помогает выявлять, анализировать и изменять автоматические негативные мысли, вызывающие стресс и эмоциональное выгорание.</p>
+        
+        <p>Как медицинские работники, вы постоянно сталкиваетесь с высокими нагрузками, критическими ситуациями и ответственностью. Это создает почву для возникновения автоматических мыслей, которые часто искажают реальность и усиливают стресс.</p>
+        
+        <h3>Что такое автоматические мысли?</h3>
+        <p>Автоматические мысли — это мгновенные, часто неосознаваемые мысли, которые возникают в ответ на определенные ситуации. Они формируются годами и становятся привычными паттернами мышления.</p>
+        
+        <h3>Как работает метод?</h3>
+        
+        <ol>
+            <li><strong>Фиксация ситуации:</strong> Вы описываете событие, которое вызвало негативную эмоцию</li>
+            <li><strong>Определение эмоций:</strong> Выявляете, что именно вы почувствовали и насколько интенсивно</li>
+            <li><strong>Выявление автоматических мыслей:</strong> Находите мысли, которые пришли в голову автоматически</li>
+            <li><strong>Анализ искажений:</strong> Определяете когнитивные искажения в этих мыслях</li>
+            <li><strong>Формирование альтернативного взгляда:</strong> Находите более сбалансированный и реалистичный взгляд на ситуацию</li>
+        </ol>
+        
+        <div class="methodology-tip">
+            <p>💡 <strong>Важно:</strong> Регулярное ведение дневника мыслей помогает перестроить паттерны мышления и снизить уровень стресса уже через 2-3 недели практики.</p>
+        </div>
+        
+        <h3>Пример когнитивных искажений, характерных для медиков:</h3>
+        
+        <ul>
+            <li><strong>Катастрофизация:</strong> "Если я ошибся с дозировкой, пациент точно умрет"</li>
+            <li><strong>Черно-белое мышление:</strong> "Либо я идеальный врач, либо я ни на что не гожусь"</li>
+            <li><strong>Долженствование:</strong> "Я должен справляться со всем идеально, несмотря на усталость"</li>
+            <li><strong>Персонализация:</strong> "Если пациенту не стало лучше, это исключительно моя вина"</li>
+            <li><strong>Эмоциональное reasoning:</strong> "Я чувствую себя неудачником, значит, я им и являюсь"</li>
+        </ul>
+        
+        <h3>Научное обоснование метода</h3>
+        <p>Дневник мыслей основан на принципах когнитивно-поведенческой терапии (КПТ), которая имеет прочную доказательную базу в лечении депрессии, тревоги и профессионального выгорания. Исследования показывают, что:</p>
+        <ul>
+            <li>Регулярное ведение дневника мыслей снижает уровень стресса на 30-40% уже через 3-4 недели</li>
+            <li>Метод помогает перестроить нейронные связи, ответственные за автоматические реакции на стресс</li>
+            <li>Практика повышает эмоциональную устойчивость и способность к рефлексии</li>
+        </ul>
+        
+        <h3>Практические рекомендации для медицинских работников</h3>
+        <p><strong>Когда использовать дневник мыслей?</strong></p>
+        <ul>
+            <li>После сложных случаев или конфликтных ситуаций</li>
+            <li>При ощущении эмоционального истощения</li>
+            <li>Когда замечаете повторяющиеся негативные мысли о работе</li>
+            <li>Перед принятием важных решений в состоянии стресса</li>
+        </ul>
+        
+        <p><strong>Как сделать практику эффективной?</strong></p>
+        <ul>
+            <li>Регулярность — старайтесь заполнять дневник хотя бы 3-4 раза в неделю</li>
+            <li>Искренность — записывайте мысли без самоцензуры</li>
+            <li>Конкретность — описывайте ситуации максимально подробно</li>
+            <li>Терпение — изменения в мышлении требуют времени (2-3 недели регулярной практики)</li>
+        </ul>
+    </section>
+
+    <!-- Тренажер дневника мыслей -->
+    <section class="trainer-section">
+        <h2 class="trainer-title">🧠 Тренажер дневника мыслей</h2>
+        
+        <div id="step1" class="trainer-step">
+            <h3><span class="step-number">1</span> Ситуация</h3>
+            <p>Опишите ситуацию, которая вызвала у вас негативные эмоции. Будьте конкретны: что, где, когда произошло?</p>
+            <textarea class="trainer-input trainer-textarea" id="situation" placeholder="Например: После тяжелой ночной смены заведующий отделением указал на небольшую неточность в моей документации при всем коллективе..."></textarea>
+        </div>
+        
+        <div id="step2" class="trainer-step" style="display: none;">
+            <h3><span class="step-number">2</span> Эмоции и ощущения</h3>
+            <p>Какие эмоции вы испытали? Оцените их интенсивность по шкале от 0 до 100%.</p>
+            
+            <div id="emotions-container">
+                <div class="emotion-item">
+                    <input type="text" class="trainer-input emotion-name" placeholder="Эмоция (например: Стыд)">
+                    <input type="number" class="trainer-input emotion-intensity" placeholder="0-100%" min="0" max="100">
+                    <button class="remove-emotion-btn" onclick="removeEmotion(this)">×</button>
+                </div>
+            </div>
+            
+            <button class="add-emotion-btn" onclick="addEmotion()">+ Добавить эмоцию</button>
+        </div>
+        
+        <div id="step3" class="trainer-step" style="display: none;">
+            <h3><span class="step-number">3</span> Автоматические мысли</h3>
+            <p>Какие мысли пришли вам в голову в тот момент? Что вы сказали себе? Зафиксируйте их без цензуры.</p>
+            <textarea class="trainer-input trainer-textarea" id="thoughts" placeholder="Например: 'Я никудышный врач', 'Все видят, что я некомпетентен', 'Меня уволят'"></textarea>
+            
+            <p>Какие из когнитивных искажений вы можете обнаружить в этих мыслях? <a href="pages/mistakes.html" target="_blank">Подробнее об ошибках мышления</a></p>
+            <input type="text" class="trainer-input" id="distortions" placeholder="Например: Катастрофизация, черно-белое мышление">
+        </div>
+        
+        <div id="step4" class="trainer-step" style="display: none;">
+            <h3><span class="step-number">4</span> Анализ и доказательства</h3>
+            <p class="evidence-for">Какие есть доказательства в пользу ваших автоматических мыслей?</p>
+            <textarea class="trainer-input trainer-textarea" id="evidence_for" placeholder="Например: Действительно, я сделал ошибку в документации"></textarea>
+            
+            <p class="evidence-against">Какие есть доказательства против этих мыслей?</p>
+            <textarea class="trainer-input trainer-textarea" id="evidence_against" placeholder="Например: Я работаю врачом 10 лет, спасал жизни, коллеги уважают меня, это была мелкая ошибка после 12-часовой смены"></textarea>
+        </div>
+        
+        <div id="step5" class="trainer-step" style="display: none;">
+            <h3><span class="step-number">5</span> Альтернативная мысль и переоценка эмоций</h3>
+            <p>Сформулируйте более сбалансированную и реалистичную мысль на основе анализа доказательств.</p>
+            <textarea class="trainer-input trainer-textarea" id="alternative_thought" placeholder="Например: Да, я сделал небольшую ошибку в документации после тяжелой смены, но это не делает меня плохим врачом. Я человек и могу уставать. Важно исправить ошибку и в будущем быть внимательнее"></textarea>
+            
+            <p>Переоцените интенсивность первоначальных эмоций после формирования альтернативной мысли:</p>
+            
+            <div id="reevaluation-container">
+                <!-- Здесь будут поля для переоценки эмоций -->
+            </div>
+        </div>
+        
+        <div class="trainer-buttons">
+            <button class="trainer-btn prev" id="prevBtn" onclick="prevStep()" style="display: none;">← Назад</button>
+            <button class="trainer-btn next" id="nextBtn" onclick="nextStep()">Далее →</button>
+        </div>
+        
+        <div id="completeSection" style="display: none; text-align: center; margin-top: 2rem;">
+            <button class="trainer-btn complete" onclick="showResult()">Завершить анализ</button>
+        </div>
+    </section>
+
+    <!-- Результат анализа -->
+    <section class="result-section" id="resultSection">
+        <h2 class="result-title">✅ Анализ завершен!</h2>
+        <p>Вот результат вашей работы с автоматической мыслью:</p>
+        
+        <div class="result-content">
+            <div class="result-item">
+                <span class="result-label">Ситуация:</span>
+                <span class="result-value" id="resultSituation"></span>
+            </div>
+            
+            <div class="result-item">
+                <span class="result-label">Автоматические мысли:</span>
+                <span class="result-value" id="resultThoughts"></span>
+            </div>
+            
+            <div class="result-item">
+                <span class="result-label">Когнитивные искажения:</span>
+                <span class="result-value" id="resultDistortions"></span>
+            </div>
+            
+            <div class="result-item">
+                <span class="result-label">Альтернативная мысль:</span>
+                <span class="result-value" id="resultAlternative"></span>
+            </div>
+            
+            <div class="result-item">
+                <span class="result-label">Изменение интенсивности эмоций:</span>
+                <div class="emotion-chart-container">
+                    <canvas id="emotionChart"></canvas>
+                </div>
+                <div id="emotionChangeSummary" class="emotion-change-summary"></div>
+            </div>
+        </div>
+        
+        <button class="trainer-btn" onclick="resetTrainer()">Начать новый анализ</button>
+    </section>
+</main>
+
+<!-- Общий футер -->
+<footer>
+    <div class="footer-content">
+        <div class="footer-section">
+            <h3>Навигация</h3>
+            <div class="footer-links">
+                <a href="../index.html">🏠 Главная</a>
+                <a href="quick-help.html">🚀 Первая помощь</a>
+                <a href="thought-diary.html">📓 Дневник мыслей</a>
+                <a href="daily.html">📅 На каждый день</a>
+                <a href="materials.html">📚 Материалы</a>
+                <a href="tests.html">📝 Тесты</a>
+            </div>
+        </div>
+        
+        <div class="footer-section" id="footer-contacts">
+            <h3>Контакты</h3>
+            <div class="contact-info">
+                <p>💬 Буду рад вашей обратной связи💬</p>
+                <div class="contact-links">
+                    <a href="mailto:aidarmentalhelp@gmail.com" class="contact-link">
+                        📩 Email
+                    </a>
+                    <a href="https://t.me/ChiefmacD" target="_blank" class="contact-link">
+                        ✈️ Telegram
+                    </a>
+                    <a href="https://wa.me/79068400712" target="_blank" class="contact-link">
+                        💬 WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-section">
+            <h3>Юридическая информация</h3>
+            <div class="legal-links">
+                <a href="legal/privacy.html">Политика конфиденциальности</a>
+                <a href="legal/terms.html">Пользовательское соглашение</a>
+                <a href="legal/consent.html">Согласие на обработку данных</a>
+                <a href="legal/cookies.html">Использование cookies</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer-bottom">
+        <p>© 2024 Анти-выгорание. Профилактика профессионального выгорания у медицинских работников</p>
+    </div>
+</footer>
+
+<!-- Фиксированное меню -->
+<div class="floating-menu">
+    <button class="menu-button">📋</button>
+    <div class="dropdown-content">
+        <a href="../index.html"><span>⭐</span> Главная</a>
+        <a href="quick-help.html"><span>🚀</span> Первая помощь</a>
+        <a href="thought-diary.html"><span>📓</span> Дневник мыслей</a>
+        <a href="daily.html"><span>📅</span> На каждый день</a>
+        <a href="materials.html"><span>📚</span> Материалы</a>
+        <a href="tests.html"><span>📝</span> Тесты</a>
+    </div>
+</div>
+
+<!-- Подключаем общие скрипты -->
+<script type="module" src="../assets/js/main.js"></script>
+
+<script>
+    // Текущий шаг тренажера
+    let currentStep = 1;
+    const totalSteps = 5;
+    let emotions = [];
+    let emotionChart = null;
+    
+    // Функция добавления эмоции
+    function addEmotion() {
+        const container = document.getElementById('emotions-container');
+        const emotionItem = document.createElement('div');
+        emotionItem.className = 'emotion-item';
+        emotionItem.innerHTML = `
+            <input type="text" class="trainer-input emotion-name" placeholder="Эмоция (например: Стыд)">
+            <input type="number" class="trainer-input emotion-intensity" placeholder="0-100%" min="0" max="100">
+            <button class="remove-emotion-btn" onclick="removeEmotion(this)">×</button>
+        `;
+        container.appendChild(emotionItem);
+    }
+    
+    // Функция удаления эмоции
+    function removeEmotion(button) {
+        const emotionItem = button.parentElement;
+        emotionItem.remove();
+    }
+    
+    // Функция сбора данных об эмоциях
+    function collectEmotions() {
+        emotions = [];
+        const emotionItems = document.querySelectorAll('.emotion-item');
+        
+        emotionItems.forEach(item => {
+            const nameInput = item.querySelector('.emotion-name');
+            const intensityInput = item.querySelector('.emotion-intensity');
+            
+            if (nameInput.value.trim() && intensityInput.value) {
+                emotions.push({
+                    name: nameInput.value.trim(),
+                    initialIntensity: parseInt(intensityInput.value),
+                    newIntensity: null
+                });
+            }
+        });
+        
+        return emotions.length > 0;
+    }
+    
+    // Функция создания полей для переоценки эмоций
+    function createReevaluationFields() {
+        const container = document.getElementById('reevaluation-container');
+        container.innerHTML = '';
+        
+        emotions.forEach((emotion, index) => {
+            const emotionItem = document.createElement('div');
+            emotionItem.className = 'emotion-item';
+            emotionItem.innerHTML = `
+                <span>${emotion.name}:</span>
+                <input type="number" class="trainer-input emotion-intensity" 
+                       placeholder="0-100%" min="0" max="100" 
+                       onchange="updateEmotionIntensity(${index}, this.value)">
+                <span>% (было ${emotion.initialIntensity}%)</span>
+            `;
+            container.appendChild(emotionItem);
+        });
+    }
+    
+    // Функция обновления интенсивности эмоции
+    function updateEmotionIntensity(index, value) {
+        if (emotions[index]) {
+            emotions[index].newIntensity = parseInt(value);
+        }
+    }
+    
+    // Функция перехода к следующему шагу
+    function nextStep() {
+        // Проверяем заполнение текущего шага
+        if (currentStep === 2 && !collectEmotions()) {
+            alert('Пожалуйста, добавьте хотя бы одну эмоцию с оценкой интенсивности');
+            return;
+        }
+        
+        // Скрываем текущий шаг
+        document.getElementById(`step${currentStep}`).style.display = 'none';
+        
+        // Увеличиваем номер шага
+        currentStep++;
+        
+        // Если переходим к шагу 5, создаем поля для переоценки
+        if (currentStep === 5) {
+            createReevaluationFields();
+        }
+        
+        // Показываем следующий шаг
+        document.getElementById(`step${currentStep}`).style.display = 'block';
+        
+        // Обновляем кнопки навигации
+        updateNavigationButtons();
+    }
+    
+    // Функция возврата к предыдущему шагу
+    function prevStep() {
+        // Скрываем текущий шаг
+        document.getElementById(`step${currentStep}`).style.display = 'none';
+        
+        // Уменьшаем номер шага
+        currentStep--;
+        
+        // Показываем предыдущий шаг
+        document.getElementById(`step${currentStep}`).style.display = 'block';
+        
+        // Обновляем кнопки навигации
+        updateNavigationButtons();
+    }
+    
+    // Функция обновления кнопок навигации
+    function updateNavigationButtons() {
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const completeSection = document.getElementById('completeSection');
+        
+        // Показываем/скрываем кнопку "Назад"
+        if (currentStep > 1) {
+            prevBtn.style.display = 'inline-block';
+        } else {
+            prevBtn.style.display = 'none';
+        }
+        
+        // Обновляем кнопку "Далее" или показываем секцию завершения
+        if (currentStep < totalSteps) {
+            nextBtn.style.display = 'inline-block';
+            completeSection.style.display = 'none';
+        } else {
+            nextBtn.style.display = 'none';
+            completeSection.style.display = 'block';
+        }
+    }
+    
+    // Функция показа результата
+    function showResult() {
+        // Проверяем, что все эмоции переоценены
+        const allReevaluated = emotions.every(emotion => emotion.newIntensity !== null);
+        if (!allReevaluated) {
+            alert('Пожалуйста, оцените интенсивность всех эмоций после формирования альтернативной мысли');
+            return;
+        }
+        
+        // Собираем данные из формы
+        const situation = document.getElementById('situation').value;
+        const thoughts = document.getElementById('thoughts').value;
+        const distortions = document.getElementById('distortions').value;
+        const alternativeThought = document.getElementById('alternative_thought').value;
+        
+        // Заполняем результат
+        document.getElementById('resultSituation').textContent = situation || 'Не указано';
+        document.getElementById('resultThoughts').textContent = thoughts || 'Не указано';
+        document.getElementById('resultDistortions').textContent = distortions || 'Не указано';
+        document.getElementById('resultAlternative').textContent = alternativeThought || 'Не указано';
+        
+        // Создаем график изменения эмоций
+        createEmotionChart();
+        
+        // Анализируем изменение эмоций
+        analyzeEmotionChanges();
+        
+        // Показываем секцию с результатом
+        document.getElementById('resultSection').style.display = 'block';
+        
+        // Прокручиваем к результату
+        document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    // Функция создания графика эмоций
+    function createEmotionChart() {
+        const ctx = document.getElementById('emotionChart').getContext('2d');
+        
+        // Уничтожаем предыдущий график, если он существует
+        if (emotionChart) {
+            emotionChart.destroy();
+        }
+        
+        const emotionNames = emotions.map(emotion => emotion.name);
+        const initialIntensities = emotions.map(emotion => emotion.initialIntensity);
+        const newIntensities = emotions.map(emotion => emotion.newIntensity);
+        
+        emotionChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: emotionNames,
+                datasets: [
+                    {
+                        label: 'До анализа',
+                        data: initialIntensities,
+                        backgroundColor: 'rgba(231, 76, 60, 0.7)',
+                        borderColor: 'rgba(231, 76, 60, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'После анализа',
+                        data: newIntensities,
+                        backgroundColor: 'rgba(46, 204, 113, 0.7)',
+                        borderColor: 'rgba(46, 204, 113, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        title: {
+                            display: true,
+                            text: 'Интенсивность (%)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Эмоции'
+                        }
+                    }
+                }
+            }
+        });
+    }
+    
+    // Функция анализа изменения эмоций
+    function analyzeEmotionChanges() {
+        let totalReduction = 0;
+        let reducedEmotions = 0;
+        
+        emotions.forEach(emotion => {
+            const reduction = emotion.initialIntensity - emotion.newIntensity;
+            if (reduction > 0) {
+                totalReduction += reduction;
+                reducedEmotions++;
+            }
+        });
+        
+        const averageReduction = reducedEmotions > 0 ? Math.round(totalReduction / reducedEmotions) : 0;
+        
+        const summaryElement = document.getElementById('emotionChangeSummary');
+        
+        if (averageReduction > 0) {
+            summaryElement.innerHTML = `
+                <p><strong>Эмоции снизились в среднем на ${averageReduction}%! Вы молодец! 🎉</strong></p>
+                <p>Это отличный результат, который показывает эффективность работы с автоматическими мыслями.</p>
+            `;
+        } else {
+            summaryElement.innerHTML = `
+                <p>Интенсивность эмоций не изменилась или увеличилась. Это нормально — работа с автоматическими мыслями требует практики.</p>
+                <p>Попробуйте проанализировать ситуацию еще раз или обратиться к дополнительным материалам.</p>
+            `;
+        }
+    }
+    
+    // Функция сброса тренажера
+    function resetTrainer() {
+        // Сбрасываем текущий шаг
+        currentStep = 1;
+        
+        // Скрываем все шаги, кроме первого
+        for (let i = 2; i <= totalSteps; i++) {
+            document.getElementById(`step${i}`).style.display = 'none';
+        }
+        
+        // Показываем первый шаг
+        document.getElementById('step1').style.display = 'block';
+        
+        // Скрываем результат
+        document.getElementById('resultSection').style.display = 'none';
+        
+        // Сбрасываем форму
+        document.getElementById('situation').value = '';
+        document.getElementById('thoughts').value = '';
+        document.getElementById('distortions').value = '';
+        document.getElementById('evidence_for').value = '';
+        document.getElementById('evidence_against').value = '';
+        document.getElementById('alternative_thought').value = '';
+        
+        // Очищаем эмоции
+        emotions = [];
+        document.getElementById('emotions-container').innerHTML = `
+            <div class="emotion-item">
+                <input type="text" class="trainer-input emotion-name" placeholder="Эмоция (например: Стыд)">
+                <input type="number" class="trainer-input emotion-intensity" placeholder="0-100%" min="0" max="100">
+                <button class="remove-emotion-btn" onclick="removeEmotion(this)">×</button>
+            </div>
+        `;
+        
+        // Обновляем кнопки навигации
+        updateNavigationButtons();
+        
+        // Прокручиваем к началу тренажера
+        document.querySelector('.trainer-section').scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    // Инициализация тренажера
+    document.addEventListener('DOMContentLoaded', function() {
+        updateNavigationButtons();
+    });
+</script>
+
+</body>
+</html>
